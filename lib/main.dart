@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
+          FocusScope.of(context).requestFocus(new FocusNode());
         }
       },
       child: MaterialApp(
         title: 'Simple Hymnal',
-        theme: ThemeData.light(),
+        theme: ThemeData.light().copyWith(cursorColor: Colors.white),
         home: HymnsPage(),
       ),
     );
