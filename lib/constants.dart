@@ -11,7 +11,7 @@ const kTitleStyle = TextStyle(
 );
 const kVerseStyle = TextStyle(
   fontFamily: 'Raleway',
-  fontSize: 16.0,
+  fontSize: 14.0,
 );
 
 var kOutlineInputBorder = OutlineInputBorder(

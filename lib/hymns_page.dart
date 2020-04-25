@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'dart:io' show Platform;
 
 import 'constants.dart';
 import 'hymns_list.dart';
@@ -13,6 +15,7 @@ final TextEditingController controller = TextEditingController();
 String currentText = "";
 String selectedHymn = hymns.keys.first;
 List<String> hymnsTitles = hymns.keys.toList();
+List<String> hymnsAllTitles = hymns.keys.toList();
 List<String> favoritesList = [];
 Color starColor = Colors.blueGrey;
 bool isFilterSwitched = false;
@@ -42,7 +45,7 @@ class _HymnsPage extends State<HymnsPage> {
             focusedBorder: kOutlineInputBorder,
             border: null),
         controller: controller,
-        suggestions: hymnsTitles,
+        suggestions: hymnsAllTitles,
         textChanged: (text) {
           currentText = text;
         },
@@ -58,6 +61,8 @@ class _HymnsPage extends State<HymnsPage> {
   @override
   void initState() {
     initializeDatabase();
+    hymnsAllTitles.sort();
+
     super.initState();
   }
 
@@ -118,6 +123,7 @@ class _HymnsPage extends State<HymnsPage> {
 
   @override
   Widget build(BuildContext context) {
+    hymnsTitles.sort();
     favoritesList.contains(selectedHymn)
         ? isTitleFavorite = true
         : isTitleFavorite = false;
@@ -208,10 +214,12 @@ class _HymnsPage extends State<HymnsPage> {
             SizedBox(
               height: 15,
             ),
-            Text(
-              hymns[selectedHymn],
-              style: kVerseStyle,
-              textAlign: TextAlign.start,
+            Center(
+              child: Text(
+                hymns[selectedHymn],
+                style: kVerseStyle,
+                textAlign: TextAlign.start,
+              ),
             ),
           ],
         ),
@@ -246,22 +254,7 @@ class _HymnsPage extends State<HymnsPage> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0),
-              child: Container(
-                  child: Switch(
-                value: isFilterSwitched,
-                onChanged: (value) {
-                  setState(() {
-                    isFilterSwitched = value;
-                    if (isFilterSwitched) {
-                      setHymnsTitleFavorites();
-                    } else {
-                      hymnsTitles = hymns.keys.toList();
-                    }
-                  });
-                },
-                activeTrackColor: Colors.lightGreenAccent,
-                activeColor: Colors.green,
-              )),
+              child: Container(child: getPlatformSpecificSwitch()),
             ),
           ],
         ),
@@ -269,6 +262,60 @@ class _HymnsPage extends State<HymnsPage> {
     ];
 
     return listOfTiles;
+  }
+
+  Widget getPlatformSpecificSwitch() {
+    try {
+      if (Platform.isIOS) {
+        return CupertinoSwitch(
+          value: isFilterSwitched,
+          onChanged: (value) {
+            setState(() {
+              isFilterSwitched = value;
+              if (isFilterSwitched) {
+                setHymnsTitleFavorites();
+              } else {
+                hymnsTitles = hymns.keys.toList();
+              }
+            });
+          },
+          trackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        );
+      } else {
+        return Switch(
+          value: isFilterSwitched,
+          onChanged: (value) {
+            setState(() {
+              isFilterSwitched = value;
+              if (isFilterSwitched) {
+                setHymnsTitleFavorites();
+              } else {
+                hymnsTitles = hymns.keys.toList();
+              }
+            });
+          },
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        );
+      }
+    } catch (e) {
+      return Switch(
+        value: isFilterSwitched,
+        onChanged: (value) {
+          setState(() {
+            isFilterSwitched = value;
+            if (isFilterSwitched) {
+              setHymnsTitleFavorites();
+            } else {
+              hymnsTitles = hymns.keys.toList();
+            }
+          });
+        },
+        activeTrackColor: Colors.lightGreenAccent,
+        activeColor: Colors.green,
+      );
+    }
   }
 
   void setHymnsTitleFavorites() {

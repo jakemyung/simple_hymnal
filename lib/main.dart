@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         }
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Simple Hymnal',
         theme: ThemeData.light().copyWith(cursorColor: Colors.white),
         home: HymnsPage(),
