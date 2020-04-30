@@ -9,10 +9,6 @@ const kTitleStyle = TextStyle(
   fontSize: 24.0,
   fontWeight: FontWeight.w700,
 );
-const kVerseStyle = TextStyle(
-  fontFamily: 'Raleway',
-  fontSize: 14.0,
-);
 
 var kOutlineInputBorder = OutlineInputBorder(
   borderRadius: BorderRadius.all(Radius.circular(25)),

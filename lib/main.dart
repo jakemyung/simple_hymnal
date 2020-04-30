@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'hymns_page.dart';
 
-void main() => runApp(MyApp());
+ThemeData themeData = ThemeData.light()
+    .copyWith(cursorColor: Colors.white, accentColor: Colors.grey);
+bool isDarkMode = false;
+void main() => runApp(MyAppState());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of the application.
+class MyAppState extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyAppState> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //GestureDetector to allow focus to change on tap.
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -18,8 +29,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Simple Hymnal',
-        theme: ThemeData.light().copyWith(cursorColor: Colors.white),
-        home: HymnsPage(),
+        theme: themeData,
+        home: HymnsPage(callback: (data) {
+          setState(() {
+            themeData = data;
+          });
+        }),
       ),
     );
   }

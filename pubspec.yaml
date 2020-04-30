@@ -1,7 +1,7 @@
 name: simplehymnal
 description: A simple hymnal
 
-version: 1.0.4
+version: 1.0.10
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   autocomplete_textfield: ^1.7.3
+  shared_preferences: ^0.5.7
 
   sqflite:
   path:
